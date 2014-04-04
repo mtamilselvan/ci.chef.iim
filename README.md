@@ -1,4 +1,4 @@
-ci.chef.iim
-===========
+ci.chef.installationmanager
+===========================
 
-Chef Cookbook to install, configure and run IBM Installation Manager
+Chef Cookbook to install and configure IBM Installation Manager

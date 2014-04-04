@@ -22,10 +22,10 @@ default[:im][:base_dir] = "/opt/ibm/IM"
 #<
 # The IM install zip file
 #>
-default[:im][:install_zip][:file] = "/vagrant/IBMIM_linux_x86.zip"
+default[:im][:install_zip][:file] = nil
 
 #<
 # The IM install zip url
 #>
-default[:im][:install_zip][:url] = "http://somewhere/ibm/IBMIM_linux_x86.zip"
+default[:im][:install_zip][:url] = nil
 
