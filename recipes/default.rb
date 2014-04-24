@@ -1,4 +1,4 @@
-# install IBM Instalation Manager
+# install IBM Installation Manager
 
 im_user = node[:im][:user]
 im_group = node[:im][:group]
