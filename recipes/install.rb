@@ -1,4 +1,4 @@
-# install IBM Instalation Manager
+# install IBM Installation Manager
 
 im_user = node[:im][:user]
 im_group = node[:im][:group]
@@ -14,7 +14,7 @@ end
 # Don't create 'root' user - allows execution as root
 if im_user != "root"
   user im_user do
-    comment 'IBM Instalation Manager'
+    comment 'IBM Installation Manager'
     gid im_group
     home im_base_dir
     shell '/bin/bash'
