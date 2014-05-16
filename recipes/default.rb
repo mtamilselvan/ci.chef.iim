@@ -1,4 +1,7 @@
-# install IBM Installation Manager
+
+#TODO some way to check if IIM is already installed, and don't do anything if it is. 
+
+# install IBM Instalation Manager
 
 im_user = node[:im][:user]
 im_group = node[:im][:group]
@@ -13,7 +16,7 @@ end
 # Don't create 'root' user - allows execution as root
 if im_user != "root"
   user im_user do
-    comment 'IBM Installation Manager'
+    comment 'IBM Instalation Manager'
     gid im_group
     home im_base_dir
     shell '/bin/bash'
@@ -54,14 +57,16 @@ execute "install #{zip_filename}" do
   not_if { ::File.exists?("#{im_base_dir}/userinstc") }
 end
 
-node.default[:internal_variables][:IM][:version_no] = '9999999'
+node.default[:internal_variables][:IM][:version_no] = '9999999'#junk to be overwtitten
 
 if im_user == "root" then
     
         ruby_block "get the version number of IM to be installed" do
           block do
             im_version_no = `grep -o -P "(?<=im.internal.version\=)[0-9\._]*" #{im_base_dir}/configuration/config.ini`
-   	    im_version_no = im_version_no.rstrip()#TODO throw an exception if the version number was not correctly set
+   	    im_version_no = im_version_no.rstrip()
+
+            raise "Error setting the version number in the install file. It comes from #{im_base_dir}/configuration/config.ini" unless im_version_no == /[0-9\._]*/
 
 	    #This monstrosity is necessary because the template provider sets all the variables in the erb during compile time. 
 	    #The only way to get the variable inside this ruby block - set at execution time (and the file being read wont exist at compile time)
