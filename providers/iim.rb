@@ -28,39 +28,11 @@ im_group = node[:im][:group]
 maybe_master_password_file = new_resource.master_password_file
 maybe_secure_storage_file = new_resource.secure_storage_file
 maybe_response_file = new_resource.response_file
-maybe_response_hash = new_resource.response_hash
-maybe_key_file = new_resource.key_file
-maybe_key_response_file = new_resource.key_response_file
+maybe_response_hash = new_resource.response_hash #( a recpipe providing the response file as a ruby object)
 
 credentials_bash_snippet = "" #this goes here for later
 
-   #TODO Throw an exception if there is both a keyfile and a secure_storage file. Alternatively, use the secure_storage file with a warn that the keyfile is ignored; if so suppress exceptions caused by the keyfile. 
-
-   #First check for a keyring and a keyring response file; we want both or neither
-   if ((not maybe_key_file.nil?) and ::File.file?(maybe_key_file)) and ((not maybe_key_response_file.nil?) and ::File.file?(maybe_key_response_file)) #TODO, better error handling for a non-nil invalid file
-     
-     key_file = maybe_key_file
-     credentials_bash_snippet = "-keyring #{key_file}"
-
-     key_response_file = maybe_key_response_file
-
-	bash 'install_keyring' do
-	    user im_user
-	    group im_group
-	    cwd "#{im_base_dir}/IBM/InstallationManager/eclipse/tools"
-	    code <<-EOH
-        	./imcl -acceptLicense input /tmp/keyring_response_file.xml -log /tmp/keyring_log.xml
-	    EOH
-	end 
-
-
-   elsif not maybe_key_file.nil? and ::File.file?(maybe_key_file) 
-     z = 1 #TODO, throw an error. You shouldn't have just one of these two files
-   elsif not maybe_key_response_file.nil? and ::File.file?(maybe_key_response_file)
-     z = 1 #TODO, throw an error. You shouldn't have just one of these two files
-   end
-
-   #Next check for a secure_storage file. 
+  #First check for a secure_storage file. 
 
    if ((not maybe_secure_storage_file.nil?) and ::File.file?(maybe_secure_storage_file))#TODO, better error handling for a non-nil invalid file
       credentials_bash_snippet = "-secureStorageFile #{maybe_secure_storage_file}"
@@ -81,12 +53,13 @@ credentials_bash_snippet = "" #this goes here for later
 	z = 1 #todo, throw an error. No response file found. 
    end
 
+   #TODO if the application is alrady installed, do nothing; possibly include a peramiater that lets recipeies state if they want to update. 
    bash 'install' do #TODO include the applicaiton name after install
     user node[:im][:user]
     group node[:im][:group]
     cwd "#{imdir}/eclipse/tools"
     code <<-EOH
-        ./imcl -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}
+        ./imcl -showProgress -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}
     EOH
    end
 end

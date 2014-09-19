@@ -57,7 +57,7 @@ execute "install #{zip_filename}" do
   not_if { ::File.exists?("#{im_base_dir}/userinstc") }
 end
 
-node.default[:internal_variables][:IM][:version_no] = '9999999'#junk to be overwtitten
+node.default[:internal_variables][:IM][:version_no] = 'ABCXYZ'#junk to be overwtitten
 
 if im_user == "root" then
     
@@ -66,10 +66,10 @@ if im_user == "root" then
             im_version_no = `grep -o -P "(?<=im.internal.version\=)[0-9\._]*" #{im_base_dir}/configuration/config.ini`
    	    im_version_no = im_version_no.rstrip()
 
-            raise "Error setting the version number in the install file. It comes from #{im_base_dir}/configuration/config.ini" unless im_version_no == /[0-9\._]*/
+            raise "Error setting fetching the version number from #{im_base_dir}/configuration/config.ini - I got #{im_version_no}" unless im_version_no =~ /\A[0-9\._]+\Z/
 
 	    #This monstrosity is necessary because the template provider sets all the variables in the erb during compile time. 
-	    #The only way to get the variable inside this ruby block - set at execution time (and the file being read wont exist at compile time)
+	    #The only way to get the variable inside this ruby block - set at execution time (as the file being read wont exist at compile time)
 	    #into the template is to explicitly set it inside this block like so:
 	    template_r = run_context.resource_collection.find(:template => "#{im_base_dir}/install.xml")
             template_r.variables({ :version_number => im_version_no})

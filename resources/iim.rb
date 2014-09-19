@@ -20,8 +20,6 @@
 
 attribute :response_file, :kind_of => String, :default => nil
 attribute :response_hash, :kind_of => String, :default => nil
-attribute :key_file, :kind_of => String, :default => nil
-attribute :key_response_file, :kind_of => String, :default => nil
 attribute :secure_storage_file, :kind_of => String, :default => nil
 attribute :master_password_file, :kind_of => String, :default => nil
 
