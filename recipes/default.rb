@@ -31,20 +31,19 @@ directory im_base_dir do
   recursive true
 end
 
-zip_file = "#{node[:im][:install_zip][:file]}"
+zip_file = node[:im][:install_zip][:file]
 
-if zip_file
+if not zip_file.nil?
   zip_filename = ::File.basename(zip_file)
-#else 
-#  zip_uri = ::URI.parse(node[:im][:install_zip][:url])
-#  zip_filename = ::File.basename(zip_uri.path)
-#  zip_file = "#{Chef::Config[:file_cache_path]}/#{zip_filename}" 
-#  remote_file zip_file do
-#    source node[:im][:install_zip][:url]
-#    user im_user
-#    group im_group
-#    not_if { ::File.exists?(im_install_dir) }
-#  end
+else 
+  zip_uri = ::URI.parse(node[:im][:install_zip][:url])
+  zip_filename = ::File.basename(zip_uri.path)
+  zip_file = "#{Chef::Config[:file_cache_path]}/#{zip_filename}" 
+  remote_file zip_file do
+    source node[:im][:install_zip][:url]
+    user im_user
+    group im_group
+  end
 end
 
 package 'unzip'
