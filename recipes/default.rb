@@ -31,9 +31,9 @@ directory im_base_dir do
   recursive true
 end
 
-zip_file = node[:im][:install_zip][:file]
+zip_file = "#{node[:im][:install_zip][:file]}"
 
-if not zip_file.nil?
+if not zip_file == ''
   zip_filename = ::File.basename(zip_file)
 else 
   zip_uri = ::URI.parse(node[:im][:install_zip][:url])
