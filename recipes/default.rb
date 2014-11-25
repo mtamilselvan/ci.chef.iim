@@ -46,7 +46,7 @@ else
   end
 end
 
-package 'unzip'
+package 'unzip' unless platform?('aix')
 
 execute "install #{zip_filename}" do
   cwd im_base_dir
@@ -56,28 +56,25 @@ execute "install #{zip_filename}" do
   not_if { ::File.exists?("#{im_base_dir}/userinstc") }
 end
 
-node.default[:internal_variables][:IM][:version_no] = 'ABCXYZ'#junk to be overwtitten
-
 if im_user == "root" then
     
         ruby_block "get the version number of IM to be installed" do
           block do
-            im_version_no = `grep -o -P "(?<=im.internal.version\=)[0-9\._]*" #{im_base_dir}/configuration/config.ini`
-   	    im_version_no = im_version_no.rstrip()
+            im_version_no = Mixlib::ShellOut.new("grep -o -P '(?<=im.internal.version\=)[0-9\._]*' #{im_base_dir}/configuration/config.ini").run_command.stdout.rstrip
+            node.run_state['im_version_no'] = im_version_no
 
             raise "Error setting fetching the version number from #{im_base_dir}/configuration/config.ini - I got #{im_version_no}" unless im_version_no =~ /\A[0-9\._]+\Z/
 
-	    #This monstrosity is necessary because the template provider sets all the variables in the erb during compile time. 
-	    #The only way to get the variable inside this ruby block - set at execution time (as the file being read wont exist at compile time)
-	    #into the template is to explicitly set it inside this block like so:
-	    template_r = run_context.resource_collection.find(:template => "#{im_base_dir}/install.xml")
-            template_r.variables({ :version_number => im_version_no})
-	 end
+          end
         end
 
         template "#{im_base_dir}/install.xml" do
+          variables(
+            lazy {
+              {:version_number => node.run_state['im_version_no']}
+            }
+          )
           source "install.xml.erb"
-	  #Variables are set in the ruby_block "get the version number of IM to be installed"
           action :create
         end    
     
