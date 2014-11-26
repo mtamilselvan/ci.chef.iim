@@ -17,7 +17,7 @@ default[:im][:user] = "im"
 default[:im][:group] = "im-admin"
 
 #<> Base installation directory.
-default[:im][:base_dir] = "/opt/IBM/IM"
+default[:im][:base_dir] = "/opt/IBM/InstallationManager"
 
 #<
 # The IM install zip file

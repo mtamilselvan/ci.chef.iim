@@ -5,7 +5,8 @@
 
 im_user = node[:im][:user]
 im_group = node[:im][:group]
-im_base_dir = "#{node[:im][:base_dir]}"
+im_base_dir = node[:im][:base_dir]
+scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
 
 # Don't create 'root' group - allows execution as root
 if im_group != "root"
@@ -19,7 +20,7 @@ if im_user != "root"
     comment 'IBM Installation Manager'
     gid im_group
     home im_base_dir
-    shell '/bin/bash'
+    shell '/bin/sh'
     system true
   end
 end
@@ -28,6 +29,13 @@ directory im_base_dir do
   group im_group
   owner im_user
   mode "0755"
+  recursive true
+end
+
+directory scratch_dir do
+  group im_group
+  owner im_user
+  mode '0755'
   recursive true
 end
 
@@ -48,47 +56,20 @@ end
 
 package 'unzip' unless platform?('aix')
 
-execute "install #{zip_filename}" do
-  cwd im_base_dir
+execute "unpack #{zip_filename}" do
+  cwd scratch_dir
   command "unzip #{zip_file}" 
   user im_user
   group im_group
-  not_if { ::File.exists?("#{im_base_dir}/userinstc") }
+  creates "#{scratch_dir}/userinstc"
 end
 
-if im_user == "root" then
-    
-        ruby_block "get the version number of IM to be installed" do
-          block do
-            im_version_no = Mixlib::ShellOut.new("grep -o -P '(?<=im.internal.version\=)[0-9\._]*' #{im_base_dir}/configuration/config.ini").run_command.stdout.rstrip
-            node.run_state['im_version_no'] = im_version_no
-
-            raise "Error setting fetching the version number from #{im_base_dir}/configuration/config.ini - I got #{im_version_no}" unless im_version_no =~ /\A[0-9\._]+\Z/
-
-          end
-        end
-
-        template "#{im_base_dir}/install.xml" do
-          variables(
-            lazy {
-              {:version_number => node.run_state['im_version_no']}
-            }
-          )
-          source "install.xml.erb"
-          action :create
-        end    
-    
-	execute "installc" do
-	  cwd im_base_dir
-	  command "./installc -log /tmp/IMinstall.log -acceptLicense -dataLocation #{im_base_dir}/IBM/InstallationManager/" 
-	  user im_user
-	  group im_group
-	end
-else 
-	execute "userinstc" do
-	  cwd im_base_dir
-	  command "./userinstc -log /tmp/IMinstall.log -acceptLicense" 
-	  user im_user
-	  group im_group
-	end
+if im_user == 'root' then
+  execute 'imcl install' do
+    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -accessRights admin -acceptLicense"
+  end
+else
+  execute 'imcl install' do
+    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{ENV['HOME']}/IBM/InstallationManager/eclipse -accessRights nonadmin -acceptLicense"
+  end
 end
