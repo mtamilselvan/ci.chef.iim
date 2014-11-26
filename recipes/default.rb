@@ -39,7 +39,7 @@ directory scratch_dir do
   recursive true
 end
 
-zip_file = "#{node[:im][:install_zip][:file]}"
+zip_file = node[:im][:install_zip][:file]
 
 if not zip_file == ''
   zip_filename = ::File.basename(zip_file)
