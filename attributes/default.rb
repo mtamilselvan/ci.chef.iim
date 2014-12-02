@@ -20,12 +20,12 @@ default[:im][:group] = "im-admin"
 default[:im][:base_dir] = "/opt/IBM/InstallationManager"
 
 #<
-# The IM install zip file
+# The IM install zip file. Set this if the installer is on a local filesystem.
 #>
 default[:im][:install_zip][:file] = nil
 
 #<
-# The IM install zip url
+# The IM install zip url. Set this if the installer is on a remote fileserver.
 #>
 default[:im][:install_zip][:url] = nil
 
