@@ -8,21 +8,17 @@ im_group = node[:im][:group]
 im_base_dir = node[:im][:base_dir]
 scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
 
-# Don't create 'root' group - allows execution as root
-if im_group != "root"
-  group im_group do
-  end
+group im_group do
+  not_if { im_group == node['root_group'] }
 end
 
-# Don't create 'root' user - allows execution as root
-if im_user != "root"
-  user im_user do
-    comment 'IBM Installation Manager'
-    gid im_group
-    home im_base_dir
-    shell '/bin/sh'
-    system true
-  end
+user im_user do
+  comment 'IBM Installation Manager'
+  gid im_group
+  home im_base_dir
+  shell '/bin/sh'
+  system true
+  not_if { im_user == 'root' }
 end
 
 directory im_base_dir do
@@ -41,7 +37,7 @@ end
 
 zip_file = node[:im][:install_zip][:file]
 
-if not zip_file == ''
+if not zip_file.nil?
   zip_filename = ::File.basename(zip_file)
 else 
   zip_uri = ::URI.parse(node[:im][:install_zip][:url])
