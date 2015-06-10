@@ -21,7 +21,7 @@ require 'tempfile'
 action :install do
 
 im_base_dir = "#{node[:im][:base_dir]}"
-imdir = "#{im_base_dir}/IBM/InstallationManager"
+imdir = "#{im_base_dir}/eclipse/tools"
 im_user = node[:im][:user]
 im_group = node[:im][:group]
 
@@ -57,7 +57,7 @@ credentials_bash_snippet = "" #this goes here for later
    bash 'install' do #TODO include the applicaiton name after install
     user node[:im][:user]
     group node[:im][:group]
-    cwd "#{imdir}/eclipse/tools"
+    cwd "#{imdir}"
     code <<-EOH
         ./imcl -showProgress -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}
     EOH
