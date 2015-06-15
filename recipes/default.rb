@@ -68,12 +68,20 @@ execute "unpack #{zip_filename}" do
   creates "#{scratch_dir}/userinstc"
 end
 
-if im_user == 'root' then
+if im_user == 'root'
   execute 'imcl install' do
     command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights admin -acceptLicense"
+    user im_user
+    im_group im_group
   end
 else
   execute 'imcl install' do
-    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights nonadmin -acceptLicense"
+    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights nonAdmin -acceptLicense"
+    user im_user
+    group im_group
+    # allow to create executable files and allow to read and write for others in the same group but not execution, read for others
+    # if this is not set the installer will fail because it cannot lock files below /opt/IBM/IM/installationLocation/configuration
+    # see https://www-304.ibm.com/support/docview.wss?uid=swg21455334
+    umask '013'
   end
 end
