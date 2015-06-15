@@ -6,6 +6,7 @@
 im_user = node[:im][:user]
 im_group = node[:im][:group]
 im_base_dir = node[:im][:base_dir]
+im_data_dir = node[:im][:data_dir]
 scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
 
 group im_group do
