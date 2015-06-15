@@ -35,6 +35,13 @@ directory scratch_dir do
   recursive true
 end
 
+directory im_data_dir do
+  group im_group
+  owner im_user
+  mode "0755"
+  recursive true
+end
+
 zip_file = node[:im][:install_zip][:file]
 
 if not zip_file.nil?
