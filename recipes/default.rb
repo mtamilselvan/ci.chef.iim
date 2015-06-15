@@ -69,10 +69,10 @@ end
 
 if im_user == 'root' then
   execute 'imcl install' do
-    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -accessRights admin -acceptLicense"
+    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights admin -acceptLicense"
   end
 else
   execute 'imcl install' do
-    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -accessRights nonadmin -acceptLicense"
+    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights nonadmin -acceptLicense"
   end
 end
