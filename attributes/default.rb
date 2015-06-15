@@ -19,7 +19,7 @@ default[:im][:group] = "im-admin"
 #<> Base installation directory.
 default[:im][:base_dir] = "/opt/IBM/InstallationManager"
 #<> Data directory
-default[:im][:im_data_dir] = "/var/ibm/InstallationManager"
+default[:im][:data_dir] = "/var/ibm/InstallationManager"
 
 #<
 # The IM install zip file. Set this if the installer is on a local filesystem.
