@@ -13,13 +13,13 @@
 # See the License for the specific language governing permissions and
 
 #<> User and Group name under which the server will be installed and running.
-default[:im][:user] = "im"
-default[:im][:group] = "im-admin"
+default[:im][:user] = 'im'
+default[:im][:group] = 'im-admin'
 
 #<> Base installation directory.
-default[:im][:base_dir] = "/opt/IBM/InstallationManager"
+default[:im][:base_dir] = '/opt/IBM/InstallationManager'
 #<> Data directory
-default[:im][:data_dir] = "/var/ibm/InstallationManager"
+default[:im][:data_dir] = '/var/ibm/InstallationManager'
 
 #<
 # The IM install zip file. Set this if the installer is on a local filesystem.

@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: IBMInstallationManager
-# Provider:: IBMInstallationManager
+# Cookbook Name:: iim
+# Provider:: iim_iim
 #
 # (C) Copyright IBM Corporation 2013.
 #
@@ -21,52 +21,57 @@ require 'tempfile'
 action :install do
 
 im_base_dir = "#{node[:im][:base_dir]}"
-imdir = "#{im_base_dir}/eclipse/tools"
+im_dir = "#{im_base_dir}/eclipse/tools"
 im_user = node[:im][:user]
 im_group = node[:im][:group]
 
 maybe_master_password_file = new_resource.master_password_file
 maybe_secure_storage_file = new_resource.secure_storage_file
 maybe_response_file = new_resource.response_file
-maybe_response_hash = new_resource.response_hash #( a recpipe providing the response file as a ruby object)
-
-credentials_bash_snippet = "" #this goes here for later
+  credentials_bash_snippet = '' #this goes here for later
 
   #First check for a secure_storage file. 
 
-   if ((not maybe_secure_storage_file.nil?) and ::File.file?(maybe_secure_storage_file))#TODO, better error handling for a non-nil invalid file
+  unless maybe_secure_storage_file.nil?
       credentials_bash_snippet = "-secureStorageFile #{maybe_secure_storage_file}"
-      if ((not maybe_master_password_file.nil?) and ::File.file?(maybe_master_password_file))
-        credentials_bash_snippet = "-secureStorageFile #{maybe_secure_storage_file} -masterPasswordFile #{maybe_master_password_file}" #TODO, add a warning if there's a master password file but no secure storage file?
+    unless maybe_master_password_file.nil?
+      #TODO: add a warning if there's a master password file but no secure storage file?
+      credentials_bash_snippet = "-secureStorageFile #{maybe_secure_storage_file} -masterPasswordFile #{maybe_master_password_file}"
       end
    end
 
-   #Next check if we have a response file or a response hash. 
-   if ::File.file?(maybe_response_file)
-	response_file = maybe_response_file 	
-   elsif not maybe_response_hash.nil? #if we have both a file and a config, defualt to the file. 
+  if ::File.file?(maybe_response_file)
+    response_file = maybe_response_file
+  elsif new_resource.response_hash
 	new_contents = []
-	generate_xml(new_resource.response_hash, new_contents)
-	response_file = Tempfile.new('install_response_file.xml')
-	response_file.write(new_contents)
-   else
-	z = 1 #todo, throw an error. No response file found. 
-   end
+    generate_xml('  ', 'agent-input', new_resource.response_hash, new_contents)
+    response_file = Tempfile.new("ibm-installation-manager-responsefile-for-#{new_resource.name}", :encoding => 'utf-8')
 
-   #TODO if the application is alrady installed, do nothing; possibly include a peramiater that lets recipeies state if they want to update. 
-   bash 'install' do #TODO include the applicaiton name after install
-    user node[:im][:user]
-    group node[:im][:group]
-    cwd "#{imdir}"
-    code <<-EOH
-        ./imcl -showProgress -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}
-    EOH
+    file response_file do
+      owner im_user
+      group im_group
+      content new_contents.join('\n')
+      backup false
+    end
+  end
+
+  #TODO: to check if an application has been installed, we should check if the responsefile has been altered and remove the response in case the execute call fails
+  install_command = "#{im_dir}/imcl -showProgress #{'-accessRights nonAdmin' unless im_user == 'root'} -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}"
+  execute "install #{new_resource.name}" do
+    user im_user
+    group im_group
+    cwd "#{im_dir}"
+    command install_command
+    # allow to create executable files and allow to read and write for others in the same group but not execution, read for others
+    # if this is not set the installer will fail because it cannot lock files below /opt/IBM/IM/installationLocation/configuration
+    # see https://www-304.ibm.com/support/docview.wss?uid=swg21455334
+    umask '013' unless im_user == 'root'
    end
 end
 
 
 
-def generate_xml(indent = "", name = "agent-input acceptLicense=\"true\"", map, output)
+def generate_xml(indent, name, map, output)
   
   attributes = {}
   elements = {}
@@ -81,12 +86,13 @@ def generate_xml(indent = "", name = "agent-input acceptLicense=\"true\"", map, 
     end
   end
 
+  line = "<#{name}"
   attributes.each_pair do |key, value|
     line << " #{key}=\"#{evaluate_value(value)}\""
   end
 
   if !elements.empty?
-    line << ">"
+    line << '>'
     output <<  "#{indent}#{line}"
     
     next_indent = "  #{indent}"
@@ -110,8 +116,15 @@ def generate_xml(indent = "", name = "agent-input acceptLicense=\"true\"", map, 
 
     output << "#{indent}</#{name}>"
   else
-    line << "/>"
+    line << '/>'
     output << "#{indent}#{line}"
   end
+  end
 
+def evaluate_value(value)
+  if value.is_a?(Proc)
+    return value.call
+  else
+    return value
+  end
 end
