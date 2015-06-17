@@ -25,7 +25,7 @@ im_base_dir = node[:im][:base_dir]
 im_data_dir = node[:im][:data_dir]
 im_home_dir = node[:im][:user_home_dir] = '/home/im'
 scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
-im_group_mode = node[:im][:group_mode]
+im_mode = node[:im][:access_mode]
 
 if im_mode == 'admin' and im_user != 'root' 
   raise "Installing im with admin access rights requires that node[:im][:user] is set to root"
