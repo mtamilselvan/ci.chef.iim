@@ -38,3 +38,5 @@ default[:im][:install_zip][:file] = nil
 #>
 default[:im][:install_zip][:url] = nil
 
+#<> Which mode to install IM in. Valid options are: 'admin' 'nonAdmin' and 'group'. 
+default[:im][:access_mode] = nonAdmin

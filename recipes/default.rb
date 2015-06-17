@@ -25,6 +25,12 @@ im_base_dir = node[:im][:base_dir]
 im_data_dir = node[:im][:data_dir]
 im_home_dir = node[:im][:user_home_dir] = '/home/im'
 scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
+im_group_mode = node[:im][:group_mode]
+
+if im_mode == 'admin' and im_user != 'root' 
+  raise "Installing im with admin access rights requires that node[:im][:user] is set to root"
+end
+
 
 group im_group do
   not_if { im_group == node['root_group'] }
@@ -75,20 +81,12 @@ execute "unpack #{zip_filename}" do
   creates "#{scratch_dir}/userinstc"
 end
 
-if im_user == 'root'
-  execute 'imcl install' do
-    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights admin -acceptLicense"
-    user im_user
-    im_group im_group
-  end
-else
-  execute 'imcl install' do
-    command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights nonAdmin -acceptLicense"
-    user im_user
-    group im_group
-    # allow to create executable files and allow to read and write for others in the same group but not execution, read for others
-    # if this is not set the installer will fail because it cannot lock files below /opt/IBM/IM/installationLocation/configuration
-    # see https://www-304.ibm.com/support/docview.wss?uid=swg21455334
-    umask '013'
-  end
+execute 'imcl install' do
+  command "#{scratch_dir}/tools/imcl install com.ibm.cic.agent -repositories #{scratch_dir}/repository.config -installationDirectory #{im_base_dir}/eclipse -dataLocation #{im_data_dir} -accessRights #{im_mode} -acceptLicense"
+  user im_user
+  group im_group
+  # allow to create executable files and allow to read and write for others in the same group but not execution, read for others
+  # if this is not set the installer will fail because it cannot lock files below /opt/IBM/IM/installationLocation/configuration
+  # see https://www-304.ibm.com/support/docview.wss?uid=swg21455334
+  umask '013' if im_mode == 'im_group'
 end

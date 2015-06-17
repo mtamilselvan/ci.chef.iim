@@ -24,6 +24,7 @@ im_base_dir = "#{node[:im][:base_dir]}"
 im_dir = "#{im_base_dir}/eclipse/tools"
 im_user = node[:im][:user]
 im_group = node[:im][:group]
+im_mode = node[:im][:access_mode]
 
 maybe_master_password_file = new_resource.master_password_file
 maybe_secure_storage_file = new_resource.secure_storage_file
@@ -65,7 +66,7 @@ maybe_response_file = new_resource.response_file
     # allow to create executable files and allow to read and write for others in the same group but not execution, read for others
     # if this is not set the installer will fail because it cannot lock files below /opt/IBM/IM/installationLocation/configuration
     # see https://www-304.ibm.com/support/docview.wss?uid=swg21455334
-    umask '013' unless im_user == 'root'
+    umask '013' if im_mode == 'im_group'
    end
 end
 
