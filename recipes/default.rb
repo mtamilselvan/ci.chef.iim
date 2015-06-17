@@ -23,6 +23,7 @@ im_user = node[:im][:user]
 im_group = node[:im][:group]
 im_base_dir = node[:im][:base_dir]
 im_data_dir = node[:im][:data_dir]
+im_home_dir = node[:im][:user_home_dir] = '/home/im'
 scratch_dir = "#{Chef::Config[:file_cache_path]}/iim"
 
 group im_group do
@@ -32,7 +33,7 @@ end
 user im_user do
   comment 'IBM Installation Manager'
   gid im_group
-  home im_base_dir
+  home im_home_dir
   shell '/bin/sh'
   system true
   not_if { im_user == 'root' }

@@ -16,6 +16,13 @@
 default[:im][:user] = 'im'
 default[:im][:group] = 'im-admin'
 
+#<
+# Home directory for im user. Ignored if im user is root. 
+# For non-root installs IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
+# The registary path MUST NOT be equal to, a parent directory, or a subdirectory of base_dir
+#>
+default[:im][:user_home_dir] = '/home/im'
+
 #<> Base installation directory.
 default[:im][:base_dir] = '/opt/IBM/InstallationManager'
 #<> Data directory

@@ -19,7 +19,11 @@ see http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.cic.comma
 
 * `node[:im][:user]` - User and Group name under which the server will be installed and running. Defaults to `"im"`.
 * `node[:im][:group]` -  Defaults to `"im-admin"`.
-* `node[:im][:base_dir]` - Base installation directory. Defaults to `"/opt/IBM/IM"`.
+* `node[:im][:user_home_dir]` - Home directory for im user. Ignored if im user is root.
+For non-root installs IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
+The registary path MUST NOT be equal to, a parent directory, or a subdirectory of base_dir. Defaults to `"/home/im"`.
+* `node[:im][:base_dir]` - Base installation directory. Defaults to `"/opt/IBM/InstallationManager"`.
+* `node[:im][:data_dir]` - Data directory. Defaults to `"/var/ibm/InstallationManager"`.
 * `node[:im][:install_zip][:file]` - The IM install zip file. Set this if the installer is on a local filesystem. Defaults to `"nil"`.
 * `node[:im][:install_zip][:url]` - The IM install zip url. Set this if the installer is on a remote fileserver. Defaults to `"nil"`.
 
@@ -42,10 +46,10 @@ Installs an IBM Offering using the IBM Installation Manager.
 
 ### Attribute Parameters
 
-- response_file: The response file for the IBM Installation Manager. Defaults to <code>nil</code>.
-- response_hash: A hash representation of the response files xml content Defaults to <code>nil</code>.
-- secure_storage_file: Sets the secureStorageFile imcl option Defaults to <code>nil</code>.
-- master_password_file: Sets the masterPasswordFile imcl option Defaults to <code>nil</code>.
+- response_file: The response file for the IBM Installation Manager. Takes priority over response_hash Defaults to <code>nil</code>.
+- response_hash: A hash representation of the response files xml content. Defaults to <code>nil</code>.
+- secure_storage_file: Sets the secureStorageFile imcl option. Defaults to <code>nil</code>.
+- master_password_file: Sets the masterPasswordFile imcl option. Defaults to <code>nil</code>.
 
 ### Examples
 
