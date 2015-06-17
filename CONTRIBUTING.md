@@ -1,1 +1,1 @@
-<meta http-equiv="refresh" content="0; url=https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md" />
+If you'd like to contributor, see our [contributor guidelines](https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md).
