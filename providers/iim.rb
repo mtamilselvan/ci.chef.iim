@@ -57,7 +57,7 @@ maybe_response_file = new_resource.response_file
   end
 
   #TODO: to check if an application has been installed, we should check if the responsefile has been altered and remove the response in case the execute call fails
-  install_command = "#{im_dir}/imcl -showProgress #{'-accessRights nonAdmin' unless im_user == 'root'} -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}"
+  install_command = "#{im_dir}/imcl -showProgress -accessRights #{im_mode} -acceptLicense input #{::File.path(response_file)} -log /tmp/install_log.xml #{credentials_bash_snippet}"
   execute "install #{new_resource.name}" do
     user im_user
     group im_group
