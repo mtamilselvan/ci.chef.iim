@@ -28,17 +28,21 @@ Installs an IBM Offering using the IBM Installation Manager using a response fil
 
 Installing from a repository
 
+```ruby
 iim_name_install Package.Name do
   repositories "repository.ibm.com"
 end
+```
 
 Installing from a password protected repository
 
+```ruby
 iim_name_install Package.Name do
   repositories "repository.ibm.com"
   secure_storage_file /path/to/secure_storage_file
   master_password_file /path/to/master_password_file
 end
+```
 
 #>
 =end
