@@ -20,7 +20,7 @@
 =begin
 #<
 
-Installs an IBM Offering using the IBM Installation Manager.
+Installs an IBM Offering using the IBM Installation Manager using a response file.
 
 @action install Installs an IBM Offering
 
@@ -31,7 +31,7 @@ Installing an offering using a response hash.
 ```ruby
 iim_response_file_install 'Websphere 8.5.5' do
   response_hash(
-    :'clean' => true,
+        :'clean' => true,
         :'temporary' => false,
         :'server' => {
                 :'repository' => {
@@ -76,7 +76,7 @@ template im_response_file do
   )
 end
 
-iim_iim 'Websphere 8.5.5' do
+iim_response_file_install 'Websphere 8.5.5' do
   response_file im_response_file
 end
 ```
@@ -95,6 +95,4 @@ attribute :response_hash, :kind_of => String, :default => nil
 attribute :secure_storage_file, :kind_of => String, :default => nil
 #<> @attribute master_password_file Sets the masterPasswordFile imcl option.
 attribute :master_password_file, :kind_of => String, :default => nil
-#<> @attribute The name of the package to be installed, optional. 
-attribute :package_name, :kind_of => String, :default => "", :name_attribute => true
 

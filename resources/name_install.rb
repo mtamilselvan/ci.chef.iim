@@ -20,15 +20,25 @@
 =begin
 #<
 
-Installs an IBM Offering using the IBM Installation Manager.
+Installs an IBM Offering using the IBM Installation Manager using a response file.
 
 @action install Installs an IBM Offering
 
-@section Examples
+@section examples
 
-Installing an offering.
+Installing from a repository
 
+iim_name_install Package.Name do
+  repositories "repository.ibm.com"
+end
 
+Installing from a password protected repository
+
+iim_name_install Package.Name do
+  repositories "repository.ibm.com"
+  secure_storage_file /path/to/secure_storage_file
+  master_password_file /path/to/master_password_file
+end
 
 #>
 =end

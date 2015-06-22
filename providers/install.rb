@@ -45,6 +45,9 @@ action :install do
    end
 
    install_command = "#{im_dir}/imcl #{install_command_snippet} -showProgress -accessRights #{im_mode} -acceptLicense -log /tmp/install_log.xml #{credentials_bash_snippet}"
+    
+   raise "Invalid charachters found in install_command. Valid charachters are a-z, A-Z, 0-9, '-', '\\' and whitespace" unless install_command =~ /[0-9|a-z|A-Z|\s|\\|\-]*/
+
    execute "install #{new_resource.name}" do
      user im_user
      group im_group
@@ -69,7 +72,7 @@ def _log_security_choice(cookbook_provided_secure_storage_file, cookbook_provide
       message << "Using the secure storage and master password files from a cookbook"
     elsif (cookbook_provided_secure_storage_file.nil? and not cookbook_provided_master_password_file.nil?)
       message << "The cookbook provided a master password file, but no secure storage file. "
-      level = :warn
+      log_level = :warn
       if (not node_secure_storage_file.nil? and not node_master_password_file.nil?)
         message << "So we will use the default secure storage file and master password file."
       elsif not node_secure_storage_file.nil?
@@ -80,7 +83,7 @@ def _log_security_choice(cookbook_provided_secure_storage_file, cookbook_provide
     elsif (not node_secure_storage_file.nil? and not node_master_password_file.nil?)
       message << "Using the default secure storage file and master password file"
     elsif not node_master_password_file.nil?
-      level = :warn
+      log_level = :warn
       message << "We have a default master password file but no secure storage file. We will ignore it"
     else
       message << "No security credentials were provided. Attempting anonymous login"

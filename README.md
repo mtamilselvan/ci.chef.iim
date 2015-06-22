@@ -20,12 +20,15 @@ see http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.cic.comma
 * `node[:im][:user]` - User and Group name under which the server will be installed and running. Defaults to `"im"`.
 * `node[:im][:group]` -  Defaults to `"im-admin"`.
 * `node[:im][:user_home_dir]` - Home directory for im user. Ignored if im user is root.
-For non-root installs IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
+For nonAdmin access mode IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
 The registary path MUST NOT be equal to, a parent directory, or a subdirectory of base_dir. Defaults to `"/home/im"`.
 * `node[:im][:base_dir]` - Base installation directory. Defaults to `"/opt/IBM/InstallationManager"`.
 * `node[:im][:data_dir]` - Data directory. Defaults to `"/var/ibm/InstallationManager"`.
 * `node[:im][:install_zip][:file]` - The IM install zip file. Set this if the installer is on a local filesystem. Defaults to `"nil"`.
 * `node[:im][:install_zip][:url]` - The IM install zip url. Set this if the installer is on a remote fileserver. Defaults to `"nil"`.
+* `node[:im][:access_mode]` - Which mode to install IM in. Valid options are: 'admin' 'nonAdmin' and 'group'. Defaults to `"nonAdmin"`.
+* `node[:im][:secure_storeage_file]` - A default secure storage file which will be used only if the cookbook calling a provider does not supply it's own secure storage file. Defaults to `"nil"`.
+* `node[:im][:master_password_file]` - A default master password file which will be used only if the cookbook calling a provider does not supply it's own master password and secure storage files. Defaults to `"nil"`.
 
 # Recipes
 
@@ -33,12 +36,61 @@ The registary path MUST NOT be equal to, a parent directory, or a subdirectory o
 
 # Resources
 
-* [iim_iim](#iim_iim) - Installs an IBM Offering using the IBM Installation Manager.
+* [iim_install](#iim_install)
+* [iim_name_install](#iim_name_install) - Installs an IBM Offering using the IBM Installation Manager using a response file.
+* [iim_response_file_install](#iim_response_file_install) - Installs an IBM Offering using the IBM Installation Manager using a response file.
 
-## iim_iim
+## iim_install
 
 
-Installs an IBM Offering using the IBM Installation Manager.
+A backend repository wrapped by name_install and response_file_install
+
+### Actions
+
+- install:  Default action.
+
+### Attribute Parameters
+
+- install_command_snippet:  Defaults to <code>nil</code>.
+- secure_storage_file:  Defaults to <code>nil</code>.
+- master_password_file:  Defaults to <code>nil</code>.
+
+## iim_name_install
+
+
+Installs an IBM Offering using the IBM Installation Manager using a response file.
+
+### Actions
+
+- install: Installs an IBM Offering Default action.
+
+### Attribute Parameters
+
+- secure_storage_file: Sets the secureStorageFile imcl option. Defaults to <code>nil</code>.
+- master_password_file: Sets the masterPasswordFile imcl option. Defaults to <code>nil</code>.
+- repositories: The repository to search, multiple repositories may be specified with a comma seperated list. Defaults to <code>nil</code>.
+- install_directory: The directory to install the package into. Defaults to <code>nil</code>.
+
+### examples
+
+Installing from a repository
+
+iim_name_install Package.Name do
+  repositories "repository.ibm.com"
+end
+
+Installing from a password protected repository
+
+iim_name_install Package.Name do
+  repositories "repository.ibm.com"
+  secure_storage_file /path/to/secure_storage_file
+  master_password_file /path/to/master_password_file
+end
+
+## iim_response_file_install
+
+
+Installs an IBM Offering using the IBM Installation Manager using a response file.
 
 ### Actions
 
@@ -56,9 +108,9 @@ Installs an IBM Offering using the IBM Installation Manager.
 Installing an offering using a response hash.
 
 ```ruby
-iim_iim 'Websphere 8.5.5' do
+iim_response_file_install 'Websphere 8.5.5' do
   response_hash(
-    :'clean' => true,
+        :'clean' => true,
         :'temporary' => false,
         :'server' => {
                 :'repository' => {
@@ -103,7 +155,7 @@ template im_response_file do
   )
 end
 
-iim_iim 'Websphere 8.5.5' do
+iim_response_file_install 'Websphere 8.5.5' do
   response_file im_response_file
 end
 ```

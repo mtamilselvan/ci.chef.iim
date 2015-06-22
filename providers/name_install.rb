@@ -20,9 +20,8 @@
 
 action :install do
 
-  if new_resource.name.nil? or new_resource.repositories.nil?
-    #Do raise and error and crash. 
-  end
+  raise "no package name was provided" if new_resource.name.nil?
+  rause "no repositories were provided" if new_resource.repositories.nil?
   
   install_command_snippet = "install #{new_resource.name} -repositories #{new_resource.repositories} "
   install_command_snippet << " -installationDirectory #{new_resource.install_directory}" unless new_resource.install_directory.nil?

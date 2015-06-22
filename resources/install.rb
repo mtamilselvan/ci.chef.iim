@@ -17,6 +17,14 @@
 # limitations under the License.
 #
 
+=begin
+#<
+
+A backend repository wrapped by name_install and response_file_install
+
+#>
+=end
+
 actions :install
 default_action :install
 
