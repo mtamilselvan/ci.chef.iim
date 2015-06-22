@@ -40,8 +40,6 @@ default_action :install
 attribute :secure_storage_file, :kind_of => String, :default => nil
 #<> @attribute master_password_file Sets the masterPasswordFile imcl option.
 attribute :master_password_file, :kind_of => String, :default => nil
-#<> @attribute package_name The name of the package to be installed, required. 
-attribute :package_name, :kind_of => String, :default => nil, :name_attribute => true
 #<> @attribute repositories The repository to search, multiple repositories may be specified with a comma seperated list.
 attribute :repositories, :kind_of => String, :default => nil
 #<> @attribute install_directory The directory to install the package into.

@@ -20,17 +20,17 @@
 
 action :install do
 
-  if package_name.nil? or repositories.nil?
+  if new_resource.name.nil? or new_resource.repositories.nil?
     #Do raise and error and crash. 
   end
   
-  install_command_snippet = "#{new_resource.package_name} -repositories #{new_resource.repositories} "
-  install_command_snippet << " -installationDirectory #{new_resource.install_directory}" unless install_directory.nil?
+  install_command_snippet = "install #{new_resource.name} -repositories #{new_resource.repositories} "
+  install_command_snippet << " -installationDirectory #{new_resource.install_directory}" unless new_resource.install_directory.nil?
   
-  _install new_resource.package_name do
+  iim_install new_resource.name do
     install_command_snippet install_command_snippet 
-    maybe_secure_storage_file new_resource.maybe_secure_storage_file
-    maybe_master_password_file new_resource.maybe_master_password_file
+    secure_storage_file new_resource.secure_storage_file
+    master_password_file new_resource.master_password_file
   end
 
 end
