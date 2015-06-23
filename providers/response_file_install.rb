@@ -41,7 +41,7 @@ action :install do
   
   install_command_snippet = "input #{::File.path(response_file)}"
   
-  iim_install new_resource.package_name do
+  iim_install "installing" do
     install_command_snippet install_command_snippet 
     secure_storage_file new_resource.secure_storage_file
     master_password_file new_resource.master_password_file
