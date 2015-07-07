@@ -9,7 +9,7 @@ see http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.cic.comma
 
 ## Platform:
 
-*No platforms defined*
+* Linux
 
 ## Cookbooks:
 
@@ -43,7 +43,7 @@ The registary path MUST NOT be equal to, a parent directory, or a subdirectory o
 ## iim_install
 
 
-A backend repository wrapped by name_install and response_file_install
+A backend resource wrapped by name_install and response_file_install
 
 ### Actions
 
@@ -169,3 +169,5 @@ end
 Author:: Benjamin Confino
 
 Author:: Felix Simmendinger (<felix.simmendinger@coremedia.com>)
+
+Author:: Julian Dunn
