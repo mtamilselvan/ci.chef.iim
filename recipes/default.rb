@@ -41,6 +41,7 @@ user im_user do
   gid im_group
   home im_home_dir
   shell '/bin/sh'
+  manage_home true
   system true
   not_if { im_user == 'root' }
 end
