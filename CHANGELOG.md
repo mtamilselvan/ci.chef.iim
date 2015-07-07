@@ -3,6 +3,12 @@ im CHANGELOG
 
 This file is used to list changes made in each version of the iim cookbook.
 
+v0.4.0
+
+- [benjamin-confino] - added a second provider to provide a simpler lightweight interface. 
+- [benjamin-confino] - added support for installing im in group mode.
+- [benjamin-confino] - added an option for default master password and secure storage files
+
 v0.3.1
 ------
 
