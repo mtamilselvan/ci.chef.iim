@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: iim
-# Provider:: iim_iim
+# Provider:: iim_ResponseFileInstall
 #
 # (C) Copyright IBM Corporation 2013.
 #
@@ -20,7 +20,7 @@
 =begin
 #<
 
-Installs an IBM Offering using the IBM Installation Manager.
+Installs an IBM Offering using the IBM Installation Manager using a response file.
 
 @action install Installs an IBM Offering
 
@@ -29,9 +29,9 @@ Installs an IBM Offering using the IBM Installation Manager.
 Installing an offering using a response hash.
 
 ```ruby
-iim_iim 'Websphere 8.5.5' do
+iim_response_file_install 'Websphere 8.5.5' do
   response_hash(
-    :'clean' => true,
+        :'clean' => true,
         :'temporary' => false,
         :'server' => {
                 :'repository' => {
@@ -76,7 +76,7 @@ template im_response_file do
   )
 end
 
-iim_iim 'Websphere 8.5.5' do
+iim_response_file_install 'Websphere 8.5.5' do
   response_file im_response_file
 end
 ```

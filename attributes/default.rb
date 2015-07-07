@@ -18,7 +18,7 @@ default[:im][:group] = 'im-admin'
 
 #<
 # Home directory for im user. Ignored if im user is root. 
-# For non-root installs IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
+# For nonAdmin access mode IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
 # The registary path MUST NOT be equal to, a parent directory, or a subdirectory of base_dir
 #>
 default[:im][:user_home_dir] = '/home/im'
@@ -38,3 +38,11 @@ default[:im][:install_zip][:file] = nil
 #>
 default[:im][:install_zip][:url] = nil
 
+#<> Which mode to install IM in. Valid options are: 'admin' 'nonAdmin' and 'group'. 
+default[:im][:access_mode] = 'nonAdmin'
+
+#<> A default secure storage file which will be used only if the cookbook calling a provider does not supply it's own secure storage file
+default[:im][:secure_storeage_file] = nil
+
+#<> A default master password file which will be used only if the cookbook calling a provider does not supply it's own master password and secure storage files
+default[:im][:master_password_file] = nil
