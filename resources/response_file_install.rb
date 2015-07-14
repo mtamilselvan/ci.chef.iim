@@ -90,7 +90,7 @@ default_action :install
 #<> @attribute response_file The response file for the IBM Installation Manager. Takes priority over response_hash
 attribute :response_file, :kind_of => String, :default => nil
 #<> @attribute response_hash A hash representation of the response files xml content.
-attribute :response_hash, :kind_of => String, :default => nil
+attribute :response_hash, :kind_of => Hash, :default => nil
 #<> @attribute secure_storage_file Sets the secureStorageFile imcl option.
 attribute :secure_storage_file, :kind_of => String, :default => nil
 #<> @attribute master_password_file Sets the masterPasswordFile imcl option.
