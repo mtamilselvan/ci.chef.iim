@@ -5,8 +5,8 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
-#
+# http://www.apache.org/licenses/LICENSE-20c.
+#https://github.com/WASdev/ci.chef.iim/edit/master/attributes/default.rb#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,9 +17,9 @@ default[:im][:user] = 'im'
 default[:im][:group] = 'im-admin'
 
 #<
-# Home directory for im user. Ignored if im user is root. 
-# For nonAdmin access mode IM's registary will be found at user_home_dir/etc/.ibm/registry/InstallationManager.dat
-# The registary path MUST NOT be equal to, a parent directory, or a subdirectory of base_dir
+# Home directory for +im user+. The attribute is ignored if +im user+ is root. 
+# For nonAdmin access mode, IBM Installation 'Manager (IM)'s registry is found at +user_home_dir/etc/.ibm/registry/InstallationManager.dat+
+# The registry path MUST NOT be equal to a parent directory or a subdirectory of +base_dir+
 #>
 default[:im][:user_home_dir] = '/home/im'
 
@@ -38,11 +38,11 @@ default[:im][:install_zip][:file] = nil
 #>
 default[:im][:install_zip][:url] = nil
 
-#<> Which mode to install IM in. Valid options are: 'admin' 'nonAdmin' and 'group'. 
+#<> The mode in which the installation is run. Valid options are: 'admin' 'nonAdmin' and 'group'. 
 default[:im][:access_mode] = 'nonAdmin'
 
-#<> A default secure storage file which will be used only if the cookbook calling a provider does not supply it's own secure storage file
+#<> A default secure storage file, which is only used if the cookbook that calls the provider does not supply its own secure storage file
 default[:im][:secure_storeage_file] = nil
 
-#<> A default master password file which will be used only if the cookbook calling a provider does not supply it's own master password and secure storage files
+#<> A default master password file, which is only used if the cookbook that calls the provider does not supply its own master password and secure storage files
 default[:im][:master_password_file] = nil
