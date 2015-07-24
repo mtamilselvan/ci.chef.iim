@@ -20,9 +20,9 @@
 =begin
 #<
 
-Installs an IBM Offering using the IBM Installation Manager using a response file.
+Installs an IBM product by executing the IBM Installation Manager with a response file. 
 
-@action install Installs an IBM Offering
+@action install Installs an IBM Product
 
 @section Examples
 
@@ -64,7 +64,7 @@ iim_response_file_install 'Websphere 8.5.5' do
 end
 ```
 
-Installing an offering using a response file. The template resource must be provided by you.
+Installs an IBM product by using a response file. The template resource must be provided by the user
 
 ```ruby
 im_response_file = '/var/tmp/my-response-file'
@@ -87,12 +87,12 @@ end
 actions :install
 default_action :install
 
-#<> @attribute response_file The response file for the IBM Installation Manager. Takes priority over response_hash
+#<> @attribute response_file The response file for the IBM Installation Manager. Takes priority over +response_hash+
 attribute :response_file, :kind_of => String, :default => nil
-#<> @attribute response_hash A hash representation of the response files xml content.
+#<> @attribute response_hash A hash representation of the response file's xml content.
 attribute :response_hash, :kind_of => Hash, :default => nil
-#<> @attribute secure_storage_file Sets the secureStorageFile imcl option.
+#<> @attribute secure_storage_file Sets the +secureStorageFile+ +imcl+ option.
 attribute :secure_storage_file, :kind_of => String, :default => nil
-#<> @attribute master_password_file Sets the masterPasswordFile imcl option.
+#<> @attribute master_password_file Sets the +masterPasswordFile+ +imcl+ option.
 attribute :master_password_file, :kind_of => String, :default => nil
 
