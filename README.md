@@ -102,7 +102,7 @@ end
 ## iim_response_file_install
 
 
-Installs an IBM product by executing the IBM Installation Manager with a response file.
+Installs an IBM product by executing the IBM Installation Manager with a response file. A response file or response file template must be provided by the user.
 
 ### Actions
 
@@ -117,7 +117,7 @@ Installs an IBM product by executing the IBM Installation Manager with a respons
 
 ### Examples
 
-Installs an IBM product by executing the IBM Installation Manager with a response file. The template response file resource must be provided by the user.
+Installs an IBM product from a repository by executing the IBM Installation Manager with a response file.
 
 ```ruby
 im_response_file = '/var/tmp/my-response-file'
@@ -125,7 +125,8 @@ im_response_file = '/var/tmp/my-response-file'
 template im_response_file do
   source 'response-file.xml.erb'
   variables(
-    :repository_url => 'some_url'
+    :repository_url => 'some_url',
+    :install_dir => 'some_dir'
   )
 end
 
@@ -148,7 +149,7 @@ iim_response_file_install 'Websphere 8.5.5' do
         },
         :'profile' => {
                 :'id' => 'IBM Websphere Application Server V8.5',
-                :'installLocation' => '/some/dir',
+                :'installLocation' => '<%= @install_dir %>',
                 :'data' => [
                         {:'key' => 'cic.selector.os', :'value' => 'linux'},
                         {:'key' => 'cic.selector.ws', :'value' => 'gtk'},
