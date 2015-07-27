@@ -20,7 +20,7 @@
 =begin
 #<
 
-A backend resource wrapped by +name_install+ and +response_file_install+
+A backend resource wrapped by `name_install` and `response_file_install`.
 
 #>
 =end
