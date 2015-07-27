@@ -26,7 +26,24 @@ Installs an IBM product by executing the IBM Installation Manager with a respons
 
 @section Examples
 
-Installing an offering using a response hash.
+Installs an IBM product by executing the IBM Installation Manager with a response file. The template response file resource must be provided by the user.
+
+```ruby
+im_response_file = '/var/tmp/my-response-file'
+
+template im_response_file do
+  source 'response-file.xml.erb'
+  variables(
+    :repository_url => 'some_url'
+  )
+end
+
+iim_response_file_install 'Websphere 8.5.5' do
+  response_file im_response_file
+end
+```
+
+An example response file template
 
 ```ruby
 iim_response_file_install 'Websphere 8.5.5' do
@@ -35,7 +52,7 @@ iim_response_file_install 'Websphere 8.5.5' do
         :'temporary' => false,
         :'server' => {
                 :'repository' => {
-                        :'location' => 'http://some.url'
+                        :'location' => '<%= @repository_url %>'
                 }
         },
         :'profile' => {
@@ -61,23 +78,6 @@ iim_response_file_install 'Websphere 8.5.5' do
                 ]
         }
 )
-end
-```
-
-Installs an IBM product by executing the IBM Installation Manager with a response file. The template response file resource must be provided by the user.
-
-```ruby
-im_response_file = '/var/tmp/my-response-file'
-
-template im_response_file do
-  source 'response-file.xml.erb'
-  variables(
-    :repository_url => 'some_url'
-  )
-end
-
-iim_response_file_install 'Websphere 8.5.5' do
-  response_file im_response_file
 end
 ```
 
