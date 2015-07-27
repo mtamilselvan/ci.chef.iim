@@ -19,7 +19,7 @@ default[:im][:group] = 'im-admin'
 #<
 # Home directory for `im user`. The attribute is ignored if `im user` is root. 
 # For nonAdmin access mode, the registry of IBM Installation Manager (IM) is found at `user_home_dir/etc/.ibm/registry/InstallationManager.dat`.
-# The registry path MUST NOT be equal to a parent directory or a subdirectory of `base_dir`.
+# The registry path MUST NOT be equal to `base_dir`, or a parent directory or a subdirectory of `base_dir`.
 #>
 default[:im][:user_home_dir] = '/home/im'
 
