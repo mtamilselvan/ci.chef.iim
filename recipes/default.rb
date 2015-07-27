@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+=begin
+#<
+Installs IBM Installation Manager.
+#>
+=end
+
 # TODO: some way to check if IIM is already installed, and don't do anything if it is.
 
 im_user = node[:im][:user]
