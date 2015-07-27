@@ -25,7 +25,7 @@ For further details about IBM Installation Manager response files, including sam
 * `node[:im][:group]` -  Defaults to `"im-admin"`.
 * `node[:im][:user_home_dir]` - Home directory for `im user`. The attribute is ignored if `im user` is root.
 For nonAdmin access mode, the registry of IBM Installation Manager (IM) is found at `user_home_dir/etc/.ibm/registry/InstallationManager.dat`.
-The registry path MUST NOT be equal to a parent directory or a subdirectory of `base_dir`. Defaults to `"/home/im"`.
+The registry path MUST NOT be equal to `base_dir`, or a parent directory or a subdirectory of `base_dir`. Defaults to `"/home/im"`.
 * `node[:im][:base_dir]` - Base installation directory. Defaults to `"/opt/IBM/InstallationManager"`.
 * `node[:im][:data_dir]` - Data directory. Defaults to `"/var/ibm/InstallationManager"`.
 * `node[:im][:install_zip][:file]` - The IM install zip file. Set this attribute if the installer is on a local filesystem. Defaults to `"nil"`.
@@ -36,7 +36,11 @@ The registry path MUST NOT be equal to a parent directory or a subdirectory of `
 
 # Recipes
 
-* iim::default
+* [iim::default](#iimdefault) - Installs IBM Installation Manager.
+
+## iim::default
+
+Installs IBM Installation Manager.
 
 # Resources
 
@@ -113,7 +117,24 @@ Installs an IBM product by executing the IBM Installation Manager with a respons
 
 ### Examples
 
-Installing an offering using a response hash.
+Installs an IBM product by executing the IBM Installation Manager with a response file. The template response file resource must be provided by the user.
+
+```ruby
+im_response_file = '/var/tmp/my-response-file'
+
+template im_response_file do
+  source 'response-file.xml.erb'
+  variables(
+    :repository_url => 'some_url'
+  )
+end
+
+iim_response_file_install 'Websphere 8.5.5' do
+  response_file im_response_file
+end
+```
+
+An example response file template
 
 ```ruby
 iim_response_file_install 'Websphere 8.5.5' do
@@ -122,7 +143,7 @@ iim_response_file_install 'Websphere 8.5.5' do
         :'temporary' => false,
         :'server' => {
                 :'repository' => {
-                        :'location' => 'http://some.url'
+                        :'location' => '<%= @repository_url %>'
                 }
         },
         :'profile' => {
@@ -148,23 +169,6 @@ iim_response_file_install 'Websphere 8.5.5' do
                 ]
         }
 )
-end
-```
-
-Installs an IBM product by executing the IBM Installation Manager with a response file. The template response file resource must be provided by the user.
-
-```ruby
-im_response_file = '/var/tmp/my-response-file'
-
-template im_response_file do
-  source 'response-file.xml.erb'
-  variables(
-    :repository_url => 'some_url'
-  )
-end
-
-iim_response_file_install 'Websphere 8.5.5' do
-  response_file im_response_file
 end
 ```
 
