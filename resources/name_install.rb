@@ -50,9 +50,9 @@ end
 actions :install
 default_action :install
 
-#<> @attribute secure_storage_file Sets the +secureStorageFile+ +imcl+ option.
+#<> @attribute secure_storage_file Sets the `secureStorageFile` `imcl` option.
 attribute :secure_storage_file, :kind_of => String, :default => nil
-#<> @attribute master_password_file Sets the +masterPasswordFile+ +imcl+ option.
+#<> @attribute master_password_file Sets the `masterPasswordFile` `imcl` option.
 attribute :master_password_file, :kind_of => String, :default => nil
 #<> @attribute repositories The repository to search. Multiple repositories can be specified with a comma-separated list.
 attribute :repositories, :kind_of => String, :default => nil
