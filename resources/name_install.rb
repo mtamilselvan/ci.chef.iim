@@ -20,9 +20,9 @@
 =begin
 #<
 
-Installs an IBM product by executing the IBM Installation Manager using the default configuration options.
+Installs an IBM product by executing the IBM Installation manager and selecting the default installation options.
 
-@action install Installs an IBM Offering
+@action install Installs an IBM product
 
 @section examples
 
