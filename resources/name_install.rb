@@ -22,11 +22,11 @@
 
 Installs an IBM product by executing the IBM Installation manager and selecting the default installation options.
 
-@action install Installs an IBM product
+@action install Installs an IBM product.
 
 @section examples
 
-Installing from a repository
+Installing from a repository.
 
 ```ruby
 iim_name_install Package.Name do
@@ -34,7 +34,7 @@ iim_name_install Package.Name do
 end
 ```
 
-Installing from a password protected repository
+Installing from a password protected repository.
 
 ```ruby
 iim_name_install Package.Name do
