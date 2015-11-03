@@ -1,6 +1,6 @@
 # Contributing
 
-Please see our [contributing guide](https://github.com/WASdev/ci.chef.iim/blob/master/CONTRIBUTING.md).
+Please see our [contributing guide](https://github.com/WASdev/wasdev.github.io/blob/master/CONTRIBUTING.md).
 
 
 # Support
