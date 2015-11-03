@@ -10,7 +10,9 @@ gem 'kitchen-vagrant', '~> 0.15'
 
 # less hard constraints
 gem 'fauxhai', '~> 2.2'
-gem 'rake'
+gem 'rake', '= 10.3.2'
+gem 'varia_model', '= 0.4.0'
+gem 'nokogiri', '= 1.6.2.1'
 gem 'emeril'
 gem 'rubocop'
 gem 'rspec'
