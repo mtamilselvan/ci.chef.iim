@@ -2,9 +2,8 @@
 
 This cookbook installs IBM Installation Manager (IM) and provides lightweight resource/providers (LWRPs) that can be used to install IBM products using the IBM Installation Manager. You can use the iim_name_install LWRP to install the package using the default configuration options, or you can have full control over the configuration of your installation by using the iim_response_file_install LWRP with a response file that defines your configuration.
 
-For further details about the IBM Installation Manager, see http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.cic.agent.ui.doc/helpindex_imic.html?cp=SSDV2W_1.8.0%2F0&lang=en
+For further details, please visit the [IBM Installation Manager Knowledge Center](http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.cic.agent.ui.doc/helpindex_imic.html?cp=SSDV2W_1.8.0%2F0&lang=en). The  [IBM Installation Manager response files](http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.8.0/com.ibm.silentinstall12.doc/topics/c_silent_response_files.html?lang=en) page includes samples and instructions for generating your own response file.
 
-For further details about IBM Installation Manager response files, including samples and instructions for generating your own response file, see http://www-01.ibm.com/support/knowledgecenter/SSDV2W_1.6.0/com.ibm.silentinstall12.doc/topics/c_silent_response_files.html?lang=en
 
 
 
@@ -13,7 +12,7 @@ For further details about IBM Installation Manager response files, including sam
 
 ## Platform:
 
-* Linux
+* linux
 
 ## Cookbooks:
 
@@ -21,18 +20,18 @@ For further details about IBM Installation Manager response files, including sam
 
 # Attributes
 
-* `node[:im][:user]` - User and group name under which the server will be installed and running. Defaults to `"im"`.
-* `node[:im][:group]` -  Defaults to `"im-admin"`.
+* `node[:im][:user]` - User and group name under which the server will be installed and running. Defaults to `im`.
+* `node[:im][:group]` -  Defaults to `im-admin`.
 * `node[:im][:user_home_dir]` - Home directory for `im user`. The attribute is ignored if `im user` is root.
 For nonAdmin access mode, the registry of IBM Installation Manager (IM) is found at `user_home_dir/etc/.ibm/registry/InstallationManager.dat`.
-The registry path MUST NOT be equal to `base_dir`, or a parent directory or a subdirectory of `base_dir`. Defaults to `"/home/im"`.
-* `node[:im][:base_dir]` - Base installation directory. Defaults to `"/opt/IBM/InstallationManager"`.
-* `node[:im][:data_dir]` - Data directory. Defaults to `"/var/ibm/InstallationManager"`.
-* `node[:im][:install_zip][:file]` - The IM install zip file. Set this attribute if the installer is on a local filesystem. Defaults to `"nil"`.
-* `node[:im][:install_zip][:url]` - The IM install zip url. Set this attribute if the installer is on a remote fileserver. Defaults to `"nil"`.
-* `node[:im][:access_mode]` - The mode in which the installation is run. Valid options are: 'admin' 'nonAdmin' and 'group'. Defaults to `"nonAdmin"`.
-* `node[:im][:secure_storeage_file]` - A default secure storage file, which is only used if the cookbook that calls the provider does not supply its own secure storage file. Defaults to `"nil"`.
-* `node[:im][:master_password_file]` - A default master password file, which is only used if the cookbook that calls the provider does not supply its own master password and secure storage files. Defaults to `"nil"`.
+The registry path MUST NOT be equal to `base_dir`, or a parent directory or a subdirectory of `base_dir`. Defaults to `/home/im`.
+* `node[:im][:base_dir]` - Base installation directory. Defaults to `/opt/IBM/InstallationManager`.
+* `node[:im][:data_dir]` - Data directory. Defaults to `/var/ibm/InstallationManager`.
+* `node[:im][:install_zip][:file]` - The IM install zip file. Set this attribute if the installer is on a local filesystem. Defaults to `nil`.
+* `node[:im][:install_zip][:url]` - The IM install zip url. Set this attribute if the installer is on a remote fileserver. Defaults to `nil`.
+* `node[:im][:access_mode]` - The mode in which the installation is run. Valid options are: 'admin' 'nonAdmin' and 'group'. Defaults to `nonAdmin`.
+* `node[:im][:secure_storeage_file]` - A default secure storage file, which is only used if the cookbook that calls the provider does not supply its own secure storage file. Defaults to `nil`.
+* `node[:im][:master_password_file]` - A default master password file, which is only used if the cookbook that calls the provider does not supply its own master password and secure storage files. Defaults to `nil`.
 
 # Recipes
 
@@ -173,10 +172,31 @@ iim_response_file_install 'Websphere 8.5.5' do
 end
 ```
 
-# Author
+# Contributing
 
-Author:: Benjamin Confino
+Please see our [contributing guide](https://github.com/WASdev/ci.chef.iim/blob/master/CONTRIBUTING.md).
 
-Author:: Felix Simmendinger (<felix.simmendinger@coremedia.com>)
 
-Author:: Julian Dunn
+# Support
+
+Use the [issue tracker][] for reporting any bugs or enhancements. For any questions please use the [WASdev forum](https://developer.ibm.com/answers/?community=wasdev).
+
+[issue tracker]: https://github.com/WASdev/ci.chef.iim/issues
+
+The cookbook is maintained by IBM.
+
+# License
+
+```text
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
