@@ -24,7 +24,7 @@ action :install do
 
   maybe_response_file = new_resource.response_file
 
-  if ::File.file?(maybe_response_file)
+  if maybe_response_file && ::File.file?(maybe_response_file)
     response_file = maybe_response_file
   elsif new_resource.response_hash
     new_contents = []
