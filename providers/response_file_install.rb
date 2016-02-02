@@ -29,7 +29,7 @@ action :install do
   elsif new_resource.response_hash
     new_contents = []
     generate_xml('  ', 'agent-input', new_resource.response_hash, new_contents)
-    response_file = Tempfile.new("ibm-installation-manager-responsefile-for-#{new_resource.name}", :encoding => 'utf-8')
+    response_file = Tempfile.new("ibm-installation-manager-responsefile-for-#{new_resource.name}", :encoding => 'utf-8').path
 
     file response_file do
       owner node[:im][:user]
