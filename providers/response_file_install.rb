@@ -32,8 +32,8 @@ action :install do
     response_file = Tempfile.new("ibm-installation-manager-responsefile-for-#{new_resource.name}", :encoding => 'utf-8')
 
     file response_file do
-      owner im_user
-      group im_group
+      owner node[:im][:user]
+      group node[:im][:group]
       content new_contents.join('\n')
       backup false
     end
